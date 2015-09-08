@@ -18,6 +18,7 @@ module E2E
       medication = patient.medications[0]
       assert_equal "TYLENOL EXTRA STRENGTH TAB 500MG", medication.description
 
+      assert_equal 2, medication.codes.length # guard against duplicated entries
       assert medication.codes['HC-DIN'].include? '00559407'
       assert medication.codes['whoATC'].include? 'N02BE01'
 
@@ -56,27 +57,30 @@ module E2E
       #assert_equal 'tablet', medication.order_information.first.quantity_ordered['unit']
       assert_equal '', medication.order_information[0].performer.given_name
       assert_equal 'qbGJGxVjhsCx/JR42Bd7tX4nbBYNgR/TehN7gQ==', medication.order_information[0].performer.family_name
-      assert_equal Time.gm(2013,9,27).to_i, medication.order_information[0].performer.start
-      assert_equal medication.order_information[0].performer.start, medication.order_information[0].orderDateTime
-      assert_equal '', medication.order_information[0].performer.npi
+      assert_equal Time.gm(2013,9,27).to_i, medication.order_information[0].orderDateTime
+      #assert_equal medication.order_information[0].performer.start, medication.order_information[0].orderDateTime
+      assert_equal medication.order_information[0].performer.family_name, medication.order_information[0].performer.npi
 
       # second listed medication (check what, when, who provided)
       medication = patient.medications[1]
+      assert_equal 2, medication.codes.length
       assert medication.codes['HC-DIN'].include? '00613215'
       assert medication.codes['whoATC'].include? 'C03DA01'
+      assert_equal 1, medication.codes['whoATC'].length
       assert_equal Time.gm(2013,9,27).to_i, medication.time
       assert_equal Time.gm(2013,9,27).to_i, medication.start_time
       assert_equal Time.gm(2013,11,22).to_i, medication.end_time
       assert_equal 1, medication.order_information.size
       assert_equal 'qbGJGxVjhsCx/JR42Bd7tX4nbBYNgR/TehN7gQ==', medication.order_information[0].performer.family_name
-      assert_equal Time.gm(2013,9,27).to_i, medication.order_information[0].performer.start
-      assert_equal medication.order_information[0].performer.start, medication.order_information[0].orderDateTime
+      assert_equal Time.gm(2013,9,27).to_i, medication.order_information[0].orderDateTime
+      #assert_equal medication.order_information[0].performer.start, medication.order_information[0].orderDateTime
       assert_equal TRUE, medication.longTerm
       assert_equal FALSE, medication.order_information[0].prn
       assert_equal ' E2E_LONG_TERM_FLAG', medication.freeTextSig
 
       # third listed medication (check what, when, who provided)
       medication = patient.medications[2]
+      assert_equal 2, medication.codes.length
       assert medication.codes['HC-DIN'].include? '00636533'
       assert medication.codes['whoATC'].include? 'M01AE01'
       assert_equal Time.gm(2013,9,27).to_i, medication.time
@@ -84,8 +88,8 @@ module E2E
       assert_equal Time.gm(2013,11,22).to_i, medication.end_time
       assert_equal 1, medication.order_information.size
       assert_equal 'qbGJGxVjhsCx/JR42Bd7tX4nbBYNgR/TehN7gQ==', medication.order_information[0].performer.family_name
-      assert_equal Time.gm(2013,9,27).to_i, medication.order_information[0].performer.start
-      assert_equal medication.order_information[0].performer.start, medication.order_information[0].orderDateTime
+      assert_equal Time.gm(2013,9,27).to_i, medication.order_information[0].orderDateTime
+      #assert_equal medication.order_information[0].performer.start, medication.order_information[0].orderDateTime
       assert_equal TRUE, medication.longTerm
       assert_equal TRUE, medication.order_information[0].prn
       assert_includes medication.freeTextSig, ' E2E_PRN_FLAG E2E_LONG_TERM_FLAG'
@@ -95,6 +99,7 @@ module E2E
 
       # fourth listed medication (check what, when, who provided)
       medication = patient.medications[3]
+      assert_equal 2, medication.codes.length
       assert medication.codes['HC-DIN'].include? '02041421'
       assert medication.codes['whoATC'].include? 'N05BA06'
       assert_equal Time.gm(2013,9,27).to_i, medication.time
@@ -102,8 +107,8 @@ module E2E
       assert_equal Time.gm(2013,11,6).to_i, medication.end_time
       assert_equal 1, medication.order_information.size
       assert_equal 'qbGJGxVjhsCx/JR42Bd7tX4nbBYNgR/TehN7gQ==', medication.order_information[0].performer.family_name
-      assert_equal Time.gm(2013,9,27).to_i, medication.order_information[0].performer.start
-      assert_equal medication.order_information[0].performer.start, medication.order_information[0].orderDateTime
+      assert_equal Time.gm(2013,9,27).to_i, medication.order_information[0].orderDateTime
+      #assert_equal medication.order_information[0].performer.start, medication.order_information[0].orderDateTime
       assert_equal TRUE, medication.longTerm
       assert_equal TRUE, medication.order_information[0].prn
       assert_equal ' E2E_PRN_FLAG E2E_LONG_TERM_FLAG', medication.freeTextSig
@@ -111,6 +116,7 @@ module E2E
 
       # fifth listed medication (check what, when, who provided)
       medication = patient.medications[4]
+      assert_equal 2, medication.codes.length
       assert medication.codes['HC-DIN'].include? '02244993'
       assert medication.codes['whoATC'].include? 'B01AC06'
       assert_equal Time.gm(2013,9,27).to_i, medication.time
@@ -118,14 +124,15 @@ module E2E
       assert_equal Time.gm(2013,11,22).to_i, medication.end_time
       assert_equal 1, medication.order_information.size
       assert_equal 'qbGJGxVjhsCx/JR42Bd7tX4nbBYNgR/TehN7gQ==', medication.order_information[0].performer.family_name
-      assert_equal Time.gm(2013,9,27).to_i, medication.order_information[0].performer.start
-      assert_equal medication.order_information[0].performer.start, medication.order_information[0].orderDateTime
+      assert_equal Time.gm(2013,9,27).to_i, medication.order_information[0].orderDateTime
+      #assert_equal medication.order_information[0].performer.start, medication.order_information[0].orderDateTime
       assert_equal TRUE, medication.longTerm
       assert_equal FALSE, medication.order_information[0].prn
       assert_equal ' E2E_LONG_TERM_FLAG', medication.freeTextSig
 
       # sixth listed medication (check what, when, who provided)
       medication = patient.medications[5]
+      assert_equal 2, medication.codes.length
       assert medication.codes['HC-DIN'].include? '02351420'
       assert medication.codes['whoATC'].include? 'C03CA01'
       assert_equal Time.gm(2013,9,27).to_i, medication.time
@@ -133,8 +140,8 @@ module E2E
       assert_equal Time.gm(2014,1,17).to_i, medication.end_time
       assert_equal 1, medication.order_information.size
       assert_equal 'qbGJGxVjhsCx/JR42Bd7tX4nbBYNgR/TehN7gQ==', medication.order_information[0].performer.family_name
-      assert_equal Time.gm(2013,9,27).to_i, medication.order_information[0].performer.start
-      assert_equal medication.order_information[0].performer.start, medication.order_information[0].orderDateTime
+      assert_equal Time.gm(2013,9,27).to_i, medication.order_information[0].orderDateTime
+      #assert_equal medication.order_information[0].performer.start, medication.order_information[0].orderDateTime
       assert_equal TRUE, medication.longTerm
       assert_equal FALSE, medication.order_information[0].prn
       assert_equal ' E2E_LONG_TERM_FLAG', medication.freeTextSig
@@ -142,6 +149,7 @@ module E2E
 
       # seventh listed medication (check what, when, who provided)
       medication = patient.medications[6]
+      assert_equal 2, medication.codes.length
       assert medication.codes['HC-DIN'].include? '02363283'
       assert medication.codes['whoATC'].include? 'C09AA05'
       refute medication.codes['whoATC'].include? 'C03CA01'
@@ -150,8 +158,8 @@ module E2E
       assert_equal Time.gm(2013,11,22).to_i, medication.end_time
       assert_equal 1, medication.order_information.size
       assert_equal 'qbGJGxVjhsCx/JR42Bd7tX4nbBYNgR/TehN7gQ==', medication.order_information[0].performer.family_name
-      assert_equal Time.gm(2013,9,27).to_i, medication.order_information[0].performer.start
-      assert_equal medication.order_information[0].performer.start, medication.order_information[0].orderDateTime
+      assert_equal Time.gm(2013,9,27).to_i, medication.order_information[0].orderDateTime
+      #assert_equal medication.order_information[0].performer.start, medication.order_information[0].orderDateTime
       assert_equal TRUE, medication.longTerm
       assert_equal FALSE, medication.order_information[0].prn
       assert_equal ' E2E_LONG_TERM_FLAG', medication.freeTextSig
@@ -159,6 +167,7 @@ module E2E
 
       # eighth listed medication (check what, when, who provided)
       medication = patient.medications[7]
+      assert_equal 2, medication.codes.length
       assert medication.codes['HC-DIN'].include? '02364948'
       assert medication.codes['whoATC'].include? 'C07AG02'
       refute medication.codes['whoATC'].include? 'C03CA01'
@@ -167,8 +176,8 @@ module E2E
       assert_equal Time.gm(2013,11,22).to_i, medication.end_time
       assert_equal 1, medication.order_information.size
       assert_equal 'qbGJGxVjhsCx/JR42Bd7tX4nbBYNgR/TehN7gQ==', medication.order_information[0].performer.family_name
-      assert_equal Time.gm(2013,9,27).to_i, medication.order_information[0].performer.start
-      assert_equal medication.order_information[0].performer.start, medication.order_information[0].orderDateTime
+      assert_equal Time.gm(2013,9,27).to_i, medication.order_information[0].orderDateTime
+      #assert_equal medication.order_information[0].performer.start, medication.order_information[0].orderDateTime
       assert_equal TRUE, medication.longTerm
       assert_equal FALSE, medication.order_information[0].prn
       assert_equal ' E2E_LONG_TERM_FLAG', medication.freeTextSig
@@ -177,6 +186,7 @@ module E2E
       medication = patient.medications[8]
       assert_equal "ATORVASTATIN 40MG", medication.description
 
+      assert_equal 2, medication.codes.length
       assert medication.codes['HC-DIN'].include? '02387913'
       assert medication.codes['whoATC'].include? 'C10AA05'
 
@@ -192,8 +202,8 @@ module E2E
       assert_equal 'd', medication.administration_timing['frequency']['denominator']['unit']
 
       assert_equal 'qbGJGxVjhsCx/JR42Bd7tX4nbBYNgR/TehN7gQ==', medication.order_information[0].performer.family_name
-      assert_equal Time.gm(2013,9,27).to_i, medication.order_information[0].performer.start
-      assert_equal medication.order_information[0].performer.start, medication.order_information[0].orderDateTime
+      assert_equal Time.gm(2013,9,27).to_i, medication.order_information[0].orderDateTime
+      #assert_equal medication.order_information[0].performer.start, medication.order_information[0].orderDateTime
       assert_equal 1, medication.order_information.size
       assert_equal TRUE, medication.longTerm
       assert_equal FALSE, medication.order_information[0].prn
@@ -218,8 +228,8 @@ module E2E
         assert_equal 1, medication.order_information.size
         assert_equal '', medication.order_information[0].performer.given_name
         assert_equal 'qbGJGxVjhsCx/JR42Bd7tX4nbBYNgR/TehN7gQ==', medication.order_information[0].performer.family_name
-        assert_equal medication.order_information[0].performer.start, medication.order_information[0].orderDateTime
-        assert_equal '', medication.order_information[0].performer.npi
+        #assert_equal medication.order_information[0].performer.start, medication.order_information[0].orderDateTime
+        assert_equal medication.order_information[0].performer.family_name, medication.order_information[0].performer.npi
       end
     end
 
@@ -365,7 +375,7 @@ module E2E
       assert_equal Time.gm(2013,2,11).to_i, medication.order_information[0].orderDateTime
       assert_equal Time.gm(2013,2,12).to_i, medication.order_information[0].orderExpirationDateTime
       assert_equal Time.gm(2003,5,29).to_i, medication.order_information[0].performer.start
-      assert_equal '', medication.order_information[0].performer.npi
+      assert_equal medication.order_information[0].performer.family_name, medication.order_information[0].performer.npi
       assert_equal TRUE, medication.order_information[0].prn
 
     end
@@ -387,7 +397,7 @@ module E2E
         assert_equal nil, medication.order_information[0].performer.start
         #assert_equal Time.gm(2014,2,27).to_i, medication.order_information[0].orderDateTime
         #assert_equal Time.gm(2014,3,6).to_i, medication.order_information[0].orderExpirationDateTime
-        assert_equal '', medication.order_information[0].performer.npi
+        assert_equal medication.order_information[0].performer.family_name, medication.order_information[0].performer.npi
       end
 
       # first listed medication
